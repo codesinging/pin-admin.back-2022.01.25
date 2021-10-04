@@ -15,5 +15,8 @@
         "psr-4": {
             "CodeSinging\\PinAdmin\\": "src"
         }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.21"
     }
 }
