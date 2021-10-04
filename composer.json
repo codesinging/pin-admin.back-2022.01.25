@@ -1,0 +1,17 @@
+{
+    "name": "codesinging/pin-admin",
+    "description": "A laravel package to build administrative application",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "codesinging",
+            "email": "codesinging@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "CodeSinging\\PinAdmin\\": "src"
+        }
+    }
+}
