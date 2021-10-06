@@ -10,7 +10,7 @@ class Application
     /**
      * The base directory relative to `app`.
      */
-    const BASE_DIRECTORY = 'PinAdmin';
+    const BASE_DIRECTORY = Admin::DIRECTORY;
 
     /**
      * Application name.

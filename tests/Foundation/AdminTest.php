@@ -67,12 +67,6 @@ class AdminTest extends TestCase
         self::assertEquals('user', $this->admin()->name());
     }
 
-    public function testPackagePath()
-    {
-        self::assertEquals(dirname(__DIR__, 2), $this->admin()->packagePath());
-        self::assertEquals(dirname(__DIR__), $this->admin()->packagePath('tests'));
-    }
-
     public function testName()
     {
         self::assertEquals('admin', $this->admin('admin')->name());

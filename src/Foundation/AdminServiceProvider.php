@@ -2,16 +2,30 @@
 
 namespace CodeSinging\PinAdmin\Foundation;
 
+use CodeSinging\PinAdmin\Console\Commands\AdminCommand;
+use CodeSinging\PinAdmin\Console\Commands\InstallCommand;
+use CodeSinging\PinAdmin\Console\Commands\ListCommand;
 use Illuminate\Support\ServiceProvider;
 
 class AdminServiceProvider extends ServiceProvider
 {
     /**
+     * The console commands of PinAdmin.
+     * @var string[]
+     */
+    protected $commands = [
+        AdminCommand::class,
+        InstallCommand::class,
+        ListCommand::class,
+    ];
+
+    /**
      * Register the application services of PinAdmin.
      */
     public function register()
     {
-        $this->app->singleton(Admin::LABEL, Admin::class);
+        $this->RegisterBinding();
+        $this->registerCommands();
     }
 
     /**
@@ -20,5 +34,23 @@ class AdminServiceProvider extends ServiceProvider
     public function boot()
     {
 
+    }
+
+    /**
+     * Register the binding to the container.
+     */
+    private function RegisterBinding(): void
+    {
+        $this->app->singleton(Admin::LABEL, Admin::class);
+    }
+
+    /**
+     * Register PinAdmin's console commands.
+     */
+    private function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands($this->commands);
+        }
     }
 }

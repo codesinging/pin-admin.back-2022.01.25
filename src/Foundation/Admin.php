@@ -137,16 +137,6 @@ class Admin
     }
 
     /**
-     * Get the package path of PinAdmin.
-     * @param string $path
-     * @return string
-     */
-    public function packagePath(string $path = ''): string
-    {
-        return dirname(__DIR__, 2) . ($path ? DIRECTORY_SEPARATOR . $path : '');
-    }
-
-    /**
      * Call the application's methods.
      * @param $name
      * @param $arguments
