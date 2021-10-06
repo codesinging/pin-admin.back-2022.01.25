@@ -25,4 +25,38 @@ trait PackageHelpers
     {
         return dirname(__DIR__, 2) . ($path ? DIRECTORY_SEPARATOR . $path : '');
     }
+
+    /**
+     * Get the indexes of all applications.
+     * @return array
+     */
+    public function getIndexes(): array
+    {
+        return include($this->basePath('indexes.php'));
+    }
+
+    /**
+     * Create application indexes.
+     * @param array $indexes
+     */
+    public function createIndexes(array $indexes)
+    {
+        $this->copyFile(
+            $this->packagePath('stubs/indexes.php'),
+            $this->basePath('indexes.php'),
+            ['__DUMMY_INDEXES__' => var_export($indexes, true)]
+        );
+    }
+
+    /**
+     * Set an application index.
+     * @param string $name
+     * @param array $configs
+     */
+    public function setIndex(string $name, array $configs = [])
+    {
+        $indexes = $this->getIndexes();
+        $indexes[$name] = array_merge($indexes[$name]??[], $configs);
+        $this->createIndexes($indexes);
+    }
 }

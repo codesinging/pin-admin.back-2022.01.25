@@ -13,12 +13,12 @@ trait FileHelpers
     protected function makeDirectory(string $path)
     {
         if (File::isDirectory($path)) {
-            $this->warn(sprintf('Directory existed [%s].', $path));
+            $this->warn(sprintf('Directory existed [%s]', $path));
         } else {
             if (File::makeDirectory($path, 0755, true)) {
-                $this->info(sprintf('Created directory [%s].', $path));
+                $this->info(sprintf('Created directory [%s]', $path));
             } else {
-                $this->error('Failed to create directory [%s].', $path);
+                $this->error('Failed to create directory [%s]', $path);
             }
         }
     }
@@ -43,12 +43,12 @@ trait FileHelpers
             }
 
             if (File::put($destFilename, $content)) {
-                $this->info(sprintf('Created file [%s].', $destFilename));
+                $this->info(sprintf('Created file [%s]', $destFilename));
             } else {
-                $this->error(sprintf('Failed to create file [%s].', $destFilename));
+                $this->error(sprintf('Failed to create file [%s]', $destFilename));
             }
         } else {
-            $this->warn(sprintf('File not found [%s].', $srcFilename));
+            $this->warn(sprintf('File not found [%s]', $srcFilename));
         }
     }
 
@@ -73,7 +73,7 @@ trait FileHelpers
                 $this->copyFile($file->getPathname(), $destDirectory . DIRECTORY_SEPARATOR . $filename, $replaces);
             }
         } else {
-            $this->warn(sprintf('Directory not found [%s].', $srcDirectory));
+            $this->warn(sprintf('Directory not found [%s]', $srcDirectory));
         }
     }
 
@@ -84,9 +84,9 @@ trait FileHelpers
     protected function deleteDirectory(string $path)
     {
         if (File::deleteDirectory($path)) {
-            $this->info(sprintf('Deleted directory [%s].', $path));
+            $this->info(sprintf('Deleted directory [%s]', $path));
         } else {
-            $this->error('Failed to delete directory [%s].', $path);
+            $this->error('Failed to delete directory [%s]', $path);
         }
     }
 
@@ -97,9 +97,9 @@ trait FileHelpers
     protected function deleteFile(string $path)
     {
         if (File::delete($path)) {
-            $this->info(sprintf('Deleted file [%s].', $path));
+            $this->info(sprintf('Deleted file [%s]', $path));
         } else {
-            $this->error('Failed to delete file [%s].', $path);
+            $this->error('Failed to delete file [%s]', $path);
         }
     }
 }

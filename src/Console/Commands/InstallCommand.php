@@ -26,14 +26,14 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->createDirectory();
-        $this->createIndexes();
+        $this->createBaseDirectory();
+        $this->createApplicationIndexes();
     }
 
     /**
      * Create the PinAdmin's base directory.
      */
-    private function createDirectory(): void
+    private function createBaseDirectory(): void
     {
         $this->title('Create PinAdmin directory');
         $this->makeDirectory($this->basePath());
@@ -42,13 +42,9 @@ class InstallCommand extends Command
     /**
      * Create application indexes.
      */
-    private function createIndexes(): void
+    private function createApplicationIndexes(): void
     {
         $this->title('Create application indexes');
-        $this->copyFile(
-            $this->packagePath('stubs/indexes.php'),
-            $this->basePath('indexes.php'),
-            ['__DUMMY_INDEXES__' => var_export([], true)]
-        );
+        $this->createIndexes([]);
     }
 }
