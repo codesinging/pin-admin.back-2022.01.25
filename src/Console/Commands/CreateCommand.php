@@ -21,7 +21,7 @@ class CreateCommand extends Command
      *
      * @var string|null
      */
-    protected $description = 'Create PinAdmin application';
+    protected $description = 'Create a PinAdmin application';
 
     /**
      * The application name.
@@ -111,7 +111,7 @@ class CreateCommand extends Command
         $this->title('Update application indexes');
         $index = [
             'name' => $this->name,
-            'enable' => true,
+            'status' => true,
         ];
         $this->setIndex($this->name, $index);
     }

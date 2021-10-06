@@ -3,6 +3,7 @@
 namespace CodeSinging\PinAdmin\Foundation;
 
 use CodeSinging\PinAdmin\Console\Commands\AdminCommand;
+use CodeSinging\PinAdmin\Console\Commands\ApplicationsCommand;
 use CodeSinging\PinAdmin\Console\Commands\CreateCommand;
 use CodeSinging\PinAdmin\Console\Commands\InstallCommand;
 use CodeSinging\PinAdmin\Console\Commands\ListCommand;
@@ -16,6 +17,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     protected $commands = [
         AdminCommand::class,
+        ApplicationsCommand::class,
         CreateCommand::class,
         InstallCommand::class,
         ListCommand::class,
