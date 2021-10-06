@@ -7,6 +7,8 @@ use CodeSinging\PinAdmin\Console\Commands\ApplicationsCommand;
 use CodeSinging\PinAdmin\Console\Commands\CreateCommand;
 use CodeSinging\PinAdmin\Console\Commands\InstallCommand;
 use CodeSinging\PinAdmin\Console\Commands\ListCommand;
+use CodeSinging\PinAdmin\Middleware\Bootstrapper;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class AdminServiceProvider extends ServiceProvider
@@ -24,12 +26,27 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     /**
+     * The middlewares of PinAdmin applications.
+     * @var string[]
+     */
+    protected $middlewares = [
+        'admin.boot' => Bootstrapper::class,
+    ];
+
+    /**
+     * The middleware groups of PinAdmin applications.
+     * @var array
+     */
+    protected $middlewareGroups = [];
+
+    /**
      * Register the application services of PinAdmin.
      */
     public function register()
     {
         $this->RegisterBinding();
         $this->registerCommands();
+        $this->registerMiddlewares();
     }
 
     /**
@@ -55,6 +72,23 @@ class AdminServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands($this->commands);
+        }
+    }
+
+    /**
+     * Register middleware for the application routes
+     */
+    private function registerMiddlewares(): void
+    {
+        /** @var Router $router */
+        $router = $this->app['router'];
+
+        foreach ($this->middlewares as $key => $middleware) {
+            $router->aliasMiddleware($key, $middleware);
+        }
+
+        foreach ($this->middlewareGroups as $key => $middlewareGroup) {
+            $router->middlewareGroup($key, $middlewareGroup);
         }
     }
 }
