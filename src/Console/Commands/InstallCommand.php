@@ -3,10 +3,14 @@
 namespace CodeSinging\PinAdmin\Console\Commands;
 
 use CodeSinging\PinAdmin\Console\Command;
+use CodeSinging\PinAdmin\Console\PackageHelpers;
+use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Foundation\Admin;
 
 class InstallCommand extends Command
 {
+    use PackageHelpers;
+
     /**
      * The name and signature of the console command.
      *
@@ -36,7 +40,7 @@ class InstallCommand extends Command
     private function createBaseDirectory(): void
     {
         $this->title('Create PinAdmin directory');
-        $this->makeDirectory($this->basePath());
+        $this->makeDirectory(AdminFacade::basePath());
     }
 
     /**

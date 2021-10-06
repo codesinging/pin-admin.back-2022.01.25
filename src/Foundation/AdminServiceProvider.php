@@ -37,7 +37,9 @@ class AdminServiceProvider extends ServiceProvider
      * The middleware groups of PinAdmin applications.
      * @var array
      */
-    protected $middlewareGroups = [];
+    protected $middlewareGroups = [
+        'admin' => [],
+    ];
 
     /**
      * Register the application services of PinAdmin.
@@ -90,5 +92,10 @@ class AdminServiceProvider extends ServiceProvider
         foreach ($this->middlewareGroups as $key => $middlewareGroup) {
             $router->middlewareGroup($key, $middlewareGroup);
         }
+    }
+
+    private function loadApplications()
+    {
+
     }
 }

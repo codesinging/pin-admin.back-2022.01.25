@@ -3,6 +3,7 @@
 namespace CodeSinging\PinAdmin\Console\Commands;
 
 use CodeSinging\PinAdmin\Console\Command;
+use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Foundation\Admin;
 
 class ApplicationsCommand extends Command
@@ -35,7 +36,7 @@ class ApplicationsCommand extends Command
     private function listApplications(): void
     {
         $this->title('All the PinAdmin applications');
-        $indexes = $this->getIndexes();
+        $indexes = AdminFacade::indexes();
         $data = [];
         foreach ($indexes as $application) {
             $data[] = [count($data) + 1, $application['name'], $application['status'] ? 'true' : 'false'];

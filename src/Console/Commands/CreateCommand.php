@@ -3,12 +3,16 @@
 namespace CodeSinging\PinAdmin\Console\Commands;
 
 use CodeSinging\PinAdmin\Console\Command;
+use CodeSinging\PinAdmin\Console\PackageHelpers;
 use CodeSinging\PinAdmin\Exceptions\InvalidApplicationNameException;
+use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Foundation\Admin;
 use CodeSinging\PinAdmin\Foundation\Application;
 
 class CreateCommand extends Command
 {
+    use PackageHelpers;
+
     /**
      * The name and signature of the console command.
      *
@@ -65,6 +69,7 @@ class CreateCommand extends Command
             $this->error(sprintf('Application [%s] already exists', $this->name));
         } else {
             $this->createApplicationDirectories();
+            $this->createApplicationRoutes();
             $this->updateApplicationIndexes();
         }
     }
@@ -75,7 +80,7 @@ class CreateCommand extends Command
      */
     private function initApplication(): void
     {
-        $this->indexes = $this->getIndexes();
+        $this->indexes = AdminFacade::indexes();
         $this->name = $this->argument('name');
         $this->application = new Application($this->name);
     }
@@ -101,6 +106,19 @@ class CreateCommand extends Command
         foreach ($this->directories as $directory) {
             $this->makeDirectory($this->application->path($directory));
         }
+    }
+
+    /**
+     * Create application routes.
+     */
+    private function createApplicationRoutes(): void
+    {
+        $this->title('Create application routes');
+        $this->copyFile(
+            AdminFacade::packagePath('stubs/routes.php'),
+            $this->application->path('routes.php'),
+            ['__DUMMY_NAME__' => $this->name]
+        );
     }
 
     /**

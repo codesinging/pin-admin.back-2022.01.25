@@ -137,6 +137,38 @@ class Admin
     }
 
     /**
+     * Get the package path of PinAdmin.
+     * @param string $path
+     * @return string
+     */
+    public function packagePath(string $path = ''): string
+    {
+        return dirname(__DIR__, 2) . ($path ? DIRECTORY_SEPARATOR . $path : '');
+    }
+
+    /**
+     * The base path of the PinAdmin applications.
+     * @param string $path
+     * @return string
+     */
+    public function basePath(string $path = ''): string
+    {
+        return app_path(self::DIRECTORY . ($path ? DIRECTORY_SEPARATOR . $path : ''));
+    }
+
+    /**
+     * Get the indexes of all applications.
+     * @return array
+     */
+    public function indexes(): array
+    {
+        if (file_exists($file = $this->basePath('indexes.php'))) {
+            return include($this->basePath('indexes.php'));
+        }
+        return [];
+    }
+
+    /**
      * Call the application's methods.
      * @param $name
      * @param $arguments
