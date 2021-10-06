@@ -8,7 +8,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web', 'admin.boot:__DUMMY_NAME__', 'admin'])
-    ->prefix('__DUMMY_NAME__')
+    ->prefix('__DUMMY_PREFIX__')
     ->group(function(){
 
     });

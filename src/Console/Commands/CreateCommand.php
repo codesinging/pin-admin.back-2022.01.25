@@ -18,7 +18,7 @@ class CreateCommand extends Command
      *
      * @var string
      */
-    protected $signature = Admin::LABEL . ':create {name}';
+    protected $signature = Admin::LABEL . ':create {name} {--P|prefix=}';
 
     /**
      * The console command description.
@@ -32,6 +32,12 @@ class CreateCommand extends Command
      * @var string
      */
     protected $name;
+
+    /**
+     * The application's route prefix.
+     * @var string
+     */
+    protected $prefix;
 
     /**
      * The application.
@@ -82,6 +88,7 @@ class CreateCommand extends Command
     {
         $this->indexes = AdminFacade::indexes();
         $this->name = $this->argument('name');
+        $this->prefix = $this->option('prefix') ?: $this->name;
         $this->application = new Application($this->name);
     }
 
@@ -117,7 +124,10 @@ class CreateCommand extends Command
         $this->copyFile(
             AdminFacade::packagePath('stubs/routes.php'),
             $this->application->path('routes.php'),
-            ['__DUMMY_NAME__' => $this->name]
+            [
+                '__DUMMY_NAME__' => $this->name,
+                '__DUMMY_PREFIX__' => $this->prefix,
+            ]
         );
     }
 
@@ -129,6 +139,7 @@ class CreateCommand extends Command
         $this->title('Update application indexes');
         $this->indexes[$this->name] = [
             'name' => $this->name,
+            'prefix' => $this->prefix,
             'status' => true,
         ];
         $this->copyFile(

@@ -39,8 +39,13 @@ class ApplicationsCommand extends Command
         $indexes = AdminFacade::indexes();
         $data = [];
         foreach ($indexes as $application) {
-            $data[] = [count($data) + 1, $application['name'], $application['status'] ? 'true' : 'false'];
+            $data[] = [
+                count($data) + 1,
+                $application['name'],
+                $application['prefix'],
+                $application['status'] ? 'true' : 'false'
+            ];
         }
-        $this->table(['Index', 'Name', 'Status'], $data);
+        $this->table(['Index', 'Name', 'Prefix', 'Status'], $data);
     }
 }
