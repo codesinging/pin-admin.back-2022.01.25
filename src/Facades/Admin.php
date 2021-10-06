@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string packagePath(string $path = '')
  * @method static string basePath(string $path = '')
  * @method static array indexes()
+ * @method static boolean isInstalled()
  *
  * @method static string name()
  * @method static string directory(string $path = '')

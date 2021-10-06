@@ -169,6 +169,15 @@ class Admin
     }
 
     /**
+     * Determine if the PinAdmin package is installed.
+     * @return bool
+     */
+    public function isInstalled(): bool
+    {
+        return file_exists($this->basePath('indexes.php'));
+    }
+
+    /**
      * Call the application's methods.
      * @param $name
      * @param $arguments

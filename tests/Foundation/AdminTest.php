@@ -84,6 +84,11 @@ class AdminTest extends TestCase
         self::assertIsArray($this->admin()->indexes());
     }
 
+    public function testIsInstalled()
+    {
+        self::assertFalse($this->admin()->isInstalled());
+    }
+
     public function testName()
     {
         self::assertEquals('admin', $this->admin('admin')->name());

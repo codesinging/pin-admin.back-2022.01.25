@@ -63,14 +63,14 @@ class CreateCommand extends Command
      */
     public function handle()
     {
-        $this->initApplication();
+        $this->init();
 
-        if ($this->applicationExisted()) {
+        if ($this->existed()) {
             $this->error(sprintf('Application [%s] already exists', $this->name));
         } else {
-            $this->createApplicationDirectories();
-            $this->createApplicationRoutes();
-            $this->updateApplicationIndexes();
+            $this->createDirectories();
+            $this->createRoutes();
+            $this->updateIndexes();
         }
     }
 
@@ -78,7 +78,7 @@ class CreateCommand extends Command
      * Initialize the application.
      * @throws InvalidApplicationNameException
      */
-    private function initApplication(): void
+    private function init(): void
     {
         $this->indexes = AdminFacade::indexes();
         $this->name = $this->argument('name');
@@ -89,7 +89,7 @@ class CreateCommand extends Command
      * Determine if the application existed.
      * @return bool
      */
-    private function applicationExisted(): bool
+    private function existed(): bool
     {
         return array_key_exists($this->name, $this->indexes);
     }
@@ -97,7 +97,7 @@ class CreateCommand extends Command
     /**
      * Create application's directories.
      */
-    private function createApplicationDirectories(): void
+    private function createDirectories(): void
     {
         $this->title('Creating application directories');
 
@@ -111,7 +111,7 @@ class CreateCommand extends Command
     /**
      * Create application routes.
      */
-    private function createApplicationRoutes(): void
+    private function createRoutes(): void
     {
         $this->title('Create application routes');
         $this->copyFile(
@@ -124,13 +124,17 @@ class CreateCommand extends Command
     /**
      * Update application indexes.
      */
-    private function updateApplicationIndexes(): void
+    private function updateIndexes(): void
     {
         $this->title('Update application indexes');
-        $index = [
+        $this->indexes[$this->name] = [
             'name' => $this->name,
             'status' => true,
         ];
-        $this->setIndex($this->name, $index);
+        $this->copyFile(
+            AdminFacade::packagePath('stubs/indexes.php'),
+            AdminFacade::basePath('indexes.php'),
+            ['__DUMMY_INDEXES__' => var_export($this->indexes, true)]
+        );
     }
 }

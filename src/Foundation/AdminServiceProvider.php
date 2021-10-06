@@ -2,11 +2,7 @@
 
 namespace CodeSinging\PinAdmin\Foundation;
 
-use CodeSinging\PinAdmin\Console\Commands\AdminCommand;
-use CodeSinging\PinAdmin\Console\Commands\ApplicationsCommand;
-use CodeSinging\PinAdmin\Console\Commands\CreateCommand;
-use CodeSinging\PinAdmin\Console\Commands\InstallCommand;
-use CodeSinging\PinAdmin\Console\Commands\ListCommand;
+use CodeSinging\PinAdmin\Console\Commands;
 use CodeSinging\PinAdmin\Middleware\Bootstrapper;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -18,11 +14,10 @@ class AdminServiceProvider extends ServiceProvider
      * @var string[]
      */
     protected $commands = [
-        AdminCommand::class,
-        ApplicationsCommand::class,
-        CreateCommand::class,
-        InstallCommand::class,
-        ListCommand::class,
+        Commands\AdminCommand::class,
+        Commands\ApplicationsCommand::class,
+        Commands\CreateCommand::class,
+        Commands\ListCommand::class,
     ];
 
     /**
