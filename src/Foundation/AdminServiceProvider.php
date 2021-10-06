@@ -18,6 +18,7 @@ class AdminServiceProvider extends ServiceProvider
         Commands\ApplicationsCommand::class,
         Commands\CreateCommand::class,
         Commands\ListCommand::class,
+        Commands\StopCommand::class,
     ];
 
     /**

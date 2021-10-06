@@ -3,7 +3,6 @@
 namespace CodeSinging\PinAdmin\Console\Commands;
 
 use CodeSinging\PinAdmin\Console\Command;
-use CodeSinging\PinAdmin\Console\PackageHelpers;
 use CodeSinging\PinAdmin\Exceptions\InvalidApplicationNameException;
 use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Foundation\Admin;
@@ -11,8 +10,6 @@ use CodeSinging\PinAdmin\Foundation\Application;
 
 class CreateCommand extends Command
 {
-    use PackageHelpers;
-
     /**
      * The name and signature of the console command.
      *
