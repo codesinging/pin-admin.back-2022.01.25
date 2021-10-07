@@ -13,8 +13,13 @@ class AdminTest extends TestCase
     public function testBaseMethods()
     {
         self::assertEquals(Admin::VERSION, $this->admin()->version());
+
         self::assertEquals(Admin::BRAND, $this->admin()->brand());
+
         self::assertEquals(Admin::LABEL, $this->admin()->label());
+        self::assertEquals(Admin::LABEL . '_user', $this->admin()->label('user'));
+        self::assertEquals(Admin::LABEL . '-config', $this->admin()->label('config', '-'));
+
         self::assertEquals(Admin::SLOGAN, $this->admin()->slogan());
     }
 

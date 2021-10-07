@@ -84,11 +84,13 @@ class Admin
 
     /**
      * Get the label of PinAdmin.
+     * @param string $suffix
+     * @param string $separator
      * @return string
      */
-    public function label(): string
+    public function label(string $suffix = '', string $separator = '_'): string
     {
-        return self::LABEL;
+        return self::LABEL . ($suffix ? $separator . $suffix : '');
     }
 
     /**
