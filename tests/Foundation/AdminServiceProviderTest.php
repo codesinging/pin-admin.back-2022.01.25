@@ -14,6 +14,6 @@ class AdminServiceProviderTest extends TestCase
 
     public function testSingleton()
     {
-        self::assertSame(app(Admin::LABEL), app(Admin::LABEL));
+        self::assertEquals(app(Admin::LABEL), app(Admin::LABEL));
     }
 }

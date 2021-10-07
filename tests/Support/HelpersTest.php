@@ -10,5 +10,6 @@ class HelpersTest extends TestCase
     public function testAdmin()
     {
         self::assertInstanceOf(Admin::class, admin());
+        self::assertEquals(admin(), admin());
     }
 }

@@ -3,6 +3,7 @@
 namespace CodeSinging\PinAdmin\Foundation;
 
 use CodeSinging\PinAdmin\Console\Commands;
+use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Middleware\Bootstrapper;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -53,7 +54,8 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        $this->loadApplications();
+        $this->loadRoutes();
     }
 
     /**
@@ -91,8 +93,27 @@ class AdminServiceProvider extends ServiceProvider
         }
     }
 
-    private function loadApplications()
+    /**
+     * Load all applications.
+     */
+    private function loadApplications(): void
     {
+        $applications = AdminFacade::indexes();
+        foreach ($applications as $name => $application) {
+            if ($application['status']) {
+                AdminFacade::add($name);
+            }
+        }
+    }
 
+    /**
+     * Load routes of all applications.
+     */
+    private function loadRoutes(): void
+    {
+        $applications = AdminFacade::applications();
+        foreach ($applications as $application) {
+            $this->loadRoutesFrom($application->path(Application::ROUTE_FILENAME));
+        }
     }
 }

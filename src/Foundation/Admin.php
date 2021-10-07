@@ -36,7 +36,7 @@ class Admin
     /**
      * The file name of application indexes.
      */
-    const INDEX_FILE = 'indexes.php';
+    const INDEX_FILENAME = 'indexes.php';
 
     /**
      * The PinAdmin directory relative to `app`.
@@ -157,7 +157,7 @@ class Admin
      * @param string ...$paths
      * @return string
      */
-    public function basePath(... $paths): string
+    public function basePath(...$paths): string
     {
         array_unshift($paths, self::DIRECTORY);
         return app_path(implode(DIRECTORY_SEPARATOR, $paths));
@@ -169,7 +169,7 @@ class Admin
      */
     public function indexes(): array
     {
-        if (file_exists($file = $this->basePath(self::INDEX_FILE))) {
+        if (file_exists($file = $this->basePath(self::INDEX_FILENAME))) {
             return include($file);
         }
         return [];
@@ -181,7 +181,7 @@ class Admin
      */
     public function isInstalled(): bool
     {
-        return file_exists($this->basePath(self::INDEX_FILE));
+        return file_exists($this->basePath(self::INDEX_FILENAME));
     }
 
     /**
@@ -192,6 +192,8 @@ class Admin
      */
     public function __call($name, $arguments)
     {
-        return call_user_func([$this->application, $name], ...$arguments);
+        if ($this->application) {
+            return $this->application->$name(...$arguments);
+        }
     }
 }

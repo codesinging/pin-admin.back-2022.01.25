@@ -13,6 +13,11 @@ class Application
     const BASE_DIRECTORY = Admin::DIRECTORY;
 
     /**
+     * The route filename of the application.
+     */
+    const ROUTE_FILENAME = 'routes.php';
+
+    /**
      * Application name.
      * @var string
      */
@@ -23,12 +28,6 @@ class Application
      * @var string
      */
     protected $directory;
-
-    /**
-     * The application path.
-     * @var string
-     */
-    protected $path;
 
     /**
      * @param string $name

@@ -119,8 +119,8 @@ class CreateCommand extends Command
     {
         $this->title('Create application routes');
         $this->copyFile(
-            AdminFacade::packagePath('stubs/routes.php'),
-            $this->application->path('routes.php'),
+            AdminFacade::packagePath('stubs', Application::ROUTE_FILENAME),
+            $this->application->path(Application::ROUTE_FILENAME),
             [
                 '__DUMMY_NAME__' => $this->name,
                 '__DUMMY_PREFIX__' => $this->prefix,
@@ -140,8 +140,8 @@ class CreateCommand extends Command
             'status' => true,
         ];
         $this->copyFile(
-            AdminFacade::packagePath('stubs/indexes.php'),
-            AdminFacade::basePath('indexes.php'),
+            AdminFacade::packagePath('stubs', Admin::INDEX_FILENAME),
+            AdminFacade::basePath(Admin::INDEX_FILENAME),
             ['__DUMMY_INDEXES__' => var_export($this->indexes, true)]
         );
     }
