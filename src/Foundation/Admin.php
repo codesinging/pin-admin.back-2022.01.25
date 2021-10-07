@@ -218,6 +218,6 @@ class Admin
         if ($this->application) {
             return $this->application->$name(...$arguments);
         }
-        throw new AdminException('Cannot call a method of application which not booted.');
+        throw new AdminException("Cannot call a method [{$name}] of application which not booted.");
     }
 }

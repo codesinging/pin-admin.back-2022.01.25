@@ -123,6 +123,7 @@ class CreateCommand extends Command
             AdminFacade::packagePath('stubs', Application::ROUTE_FILENAME),
             $this->application->path(Application::ROUTE_FILENAME),
             [
+                '__DUMMY_LABEL__' => Admin::LABEL,
                 '__DUMMY_NAME__' => $this->name,
                 '__DUMMY_PREFIX__' => $this->prefix,
                 '__DUMMY_NAMESPACE__' => $this->application->nameSpace(),

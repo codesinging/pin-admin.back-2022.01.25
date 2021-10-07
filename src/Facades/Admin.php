@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static string directory(string ...$paths)
  * @method static string path(string ...$paths)
  * @method static string nameSpace(string ...$paths)
+ * @method static string routePrefix()
+ * @method static string link(string $path = '', array $parameters = [])
  */
 class Admin extends Facade
 {

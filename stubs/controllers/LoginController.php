@@ -9,7 +9,7 @@ namespace __DUMMY_NAMESPACE__\Controllers;
 
 use CodeSinging\PinAdmin\Routing\Controller;
 
-class IndexController extends Controller
+class LoginController extends Controller
 {
     public function index(): string
     {

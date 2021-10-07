@@ -4,7 +4,8 @@ namespace CodeSinging\PinAdmin\Foundation;
 
 use CodeSinging\PinAdmin\Console\Commands;
 use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
-use CodeSinging\PinAdmin\Middleware\Bootstrapper;
+use CodeSinging\PinAdmin\Middleware\Auth;
+use CodeSinging\PinAdmin\Middleware\Guest;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -29,7 +30,8 @@ class AdminServiceProvider extends ServiceProvider
      * @var string[]
      */
     protected $middlewares = [
-        'admin.boot' => Bootstrapper::class,
+        'admin.guest' => Guest::class,
+        'admin.auth' => Auth::class,
     ];
 
     /**
