@@ -34,6 +34,11 @@ class Admin
     const LABEL = 'admin';
 
     /**
+     * The file name of application indexes.
+     */
+    const INDEX_FILE = 'indexes.php';
+
+    /**
      * The PinAdmin directory relative to `app`.
      */
     const DIRECTORY = 'PinAdmin';
@@ -138,22 +143,24 @@ class Admin
 
     /**
      * Get the package path of PinAdmin.
-     * @param string $path
+     * @param string ...$paths
      * @return string
      */
-    public function packagePath(string $path = ''): string
+    public function packagePath(...$paths): string
     {
-        return dirname(__DIR__, 2) . ($path ? DIRECTORY_SEPARATOR . $path : '');
+        array_unshift($paths, dirname(__DIR__, 2));
+        return implode(DIRECTORY_SEPARATOR, $paths);
     }
 
     /**
      * The base path of the PinAdmin applications.
-     * @param string $path
+     * @param string ...$paths
      * @return string
      */
-    public function basePath(string $path = ''): string
+    public function basePath(... $paths): string
     {
-        return app_path(self::DIRECTORY . ($path ? DIRECTORY_SEPARATOR . $path : ''));
+        array_unshift($paths, self::DIRECTORY);
+        return app_path(implode(DIRECTORY_SEPARATOR, $paths));
     }
 
     /**
@@ -162,8 +169,8 @@ class Admin
      */
     public function indexes(): array
     {
-        if (file_exists($file = $this->basePath('indexes.php'))) {
-            return include($this->basePath('indexes.php'));
+        if (file_exists($file = $this->basePath(self::INDEX_FILE))) {
+            return include($file);
         }
         return [];
     }
@@ -174,7 +181,7 @@ class Admin
      */
     public function isInstalled(): bool
     {
-        return file_exists($this->basePath('indexes.php'));
+        return file_exists($this->basePath(self::INDEX_FILE));
     }
 
     /**

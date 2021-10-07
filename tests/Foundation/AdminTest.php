@@ -71,12 +71,14 @@ class AdminTest extends TestCase
     {
         self::assertEquals(dirname(__DIR__, 2), $this->admin()->packagePath());
         self::assertEquals(dirname(__DIR__, 1), $this->admin()->packagePath('tests'));
+        self::assertEquals(__DIR__, $this->admin()->packagePath('tests', 'Foundation'));
     }
 
     public function testBasePath()
     {
         self::assertEquals(app_path(Admin::DIRECTORY), $this->admin()->basePath());
         self::assertEquals(app_path(Admin::DIRECTORY . DIRECTORY_SEPARATOR . 'Admin'), $this->admin()->basePath('Admin'));
+        self::assertEquals(app_path(Admin::DIRECTORY . DIRECTORY_SEPARATOR . 'Admin' . DIRECTORY_SEPARATOR . 'Controllers'), $this->admin()->basePath('Admin', 'Controllers'));
     }
 
     public function testIndexes()
