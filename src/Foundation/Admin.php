@@ -2,8 +2,7 @@
 
 namespace CodeSinging\PinAdmin\Foundation;
 
-use CodeSinging\PinAdmin\Exceptions\ApplicationNotFoundException;
-use CodeSinging\PinAdmin\Exceptions\InvalidApplicationNameException;
+use CodeSinging\PinAdmin\Exceptions\AdminException;
 
 /**
  * @method string name()
@@ -56,6 +55,15 @@ class Admin
     protected $application;
 
     /**
+     * Admin Constructor
+     * @throws AdminException
+     */
+    public function __construct()
+    {
+        $this->init();
+    }
+
+    /**
      * Get the version of PinAdmin.
      * @return string
      */
@@ -94,6 +102,43 @@ class Admin
     }
 
     /**
+     * Get the indexes of all applications.
+     * @return array
+     */
+    public function indexes(): array
+    {
+        if (file_exists($file = $this->basePath(self::INDEX_FILENAME))) {
+            return include($file);
+        }
+        return [];
+    }
+
+    /**
+     * Load all PinAdmin applications.
+     * @throws AdminException
+     */
+    private function init(): void
+    {
+        $applications = $this->indexes();
+        foreach ($applications as $name => $application) {
+            if ($application['status']) {
+                $this->load($name);
+            }
+        }
+    }
+
+    /**
+     * Load a PinAdmin application.
+     * @throws AdminException
+     */
+    public function load(string $name)
+    {
+        if (empty($this->applications[$name])) {
+            $this->applications[$name] = new Application($name);
+        }
+    }
+
+    /**
      * Get all the applications.
      * @return Application[]
      */
@@ -106,7 +151,7 @@ class Admin
      * Get the current or the specified application.
      * @param string|null $name
      * @return Application|null
-     * @throws ApplicationNotFoundException
+     * @throws AdminException
      */
     public function application(string $name = null): ?Application
     {
@@ -116,31 +161,16 @@ class Admin
         if (isset($this->applications[$name])) {
             return $this->applications[$name];
         }
-        throw new ApplicationNotFoundException(sprintf('Application[%s] not found', $name));
-    }
-
-    /**
-     * Add a PinAdmin application.
-     * @param string $name
-     * @throws InvalidApplicationNameException
-     */
-    public function add(string $name): void
-    {
-        if (empty($this->applications[$name])) {
-            $this->applications[$name] = new Application($name);
-        }
+        throw new AdminException(sprintf('Application[%s] not found', $name));
     }
 
     /**
      * Bootstrap a PinAdmin application.
-     * @throws InvalidApplicationNameException
+     * @throws AdminException
      */
     public function boot(string $name)
     {
-        if (empty($this->applications[$name])) {
-            $this->add($name);
-        }
-        $this->application = $this->applications[$name];
+        $this->application = $this->application($name);
     }
 
     /**
@@ -166,18 +196,6 @@ class Admin
     }
 
     /**
-     * Get the indexes of all applications.
-     * @return array
-     */
-    public function indexes(): array
-    {
-        if (file_exists($file = $this->basePath(self::INDEX_FILENAME))) {
-            return include($file);
-        }
-        return [];
-    }
-
-    /**
      * Determine if the PinAdmin package is installed.
      * @return bool
      */
@@ -191,11 +209,13 @@ class Admin
      * @param $name
      * @param $arguments
      * @return false|mixed
+     * @throws AdminException
      */
     public function __call($name, $arguments)
     {
         if ($this->application) {
             return $this->application->$name(...$arguments);
         }
+        throw new AdminException('Cannot call a method of application which not booted.');
     }
 }

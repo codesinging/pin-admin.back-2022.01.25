@@ -7,6 +7,7 @@ use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Middleware\Bootstrapper;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AdminServiceProvider extends ServiceProvider
 {
@@ -45,8 +46,6 @@ class AdminServiceProvider extends ServiceProvider
     public function register()
     {
         $this->RegisterBinding();
-        $this->registerCommands();
-        $this->registerMiddlewares();
     }
 
     /**
@@ -54,8 +53,18 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadApplications();
+        if ($this->app->runningInConsole()) {
+            $this->registerCommands();
+            $this->publishResources();
+            $this->registerMigrations();
+        }
+        if (!$this->app->configurationIsCached()) {
+            $this->mergeConfiguration();
+            $this->configureAuth();
+        }
+        $this->registerMiddlewares();
         $this->loadRoutes();
+        $this->loadViews();
     }
 
     /**
@@ -71,9 +80,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     private function registerCommands(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands($this->commands);
-        }
+        $this->commands($this->commands);
     }
 
     /**
@@ -94,26 +101,67 @@ class AdminServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load all applications.
+     * Load routes of all applications.
      */
-    private function loadApplications(): void
+    private function loadRoutes(): void
     {
-        $applications = AdminFacade::indexes();
-        foreach ($applications as $name => $application) {
-            if ($application['status']) {
-                AdminFacade::add($name);
+        if (!$this->app->routesAreCached()) {
+            $applications = AdminFacade::applications();
+            foreach ($applications as $application) {
+                $this->loadRoutesFrom($application->path(Application::ROUTE_FILENAME));
             }
         }
     }
 
     /**
-     * Load routes of all applications.
+     * Publish application resources.
      */
-    private function loadRoutes(): void
+    private function publishResources(): void
+    {
+
+    }
+
+    /**
+     * Register application migrations.
+     */
+    private function registerMigrations(): void
+    {
+
+    }
+
+    /**
+     * Load common application views.
+     */
+    private function loadViews(): void
+    {
+
+    }
+
+    /**
+     * Merge application configuration.
+     */
+    private function mergeConfiguration(): void
+    {
+        $this->mergeConfigFrom(AdminFacade::packagePath('config/admin.php'), AdminFacade::label());
+    }
+
+    /**
+     * Set the application's auth configuration.
+     */
+    private function configureAuth(): void
     {
         $applications = AdminFacade::applications();
-        foreach ($applications as $application) {
-            $this->loadRoutesFrom($application->path(Application::ROUTE_FILENAME));
+        foreach ($applications as $name => $application) {
+            config([
+                'auth.guards.' . AdminFacade::label($name) => [
+                    'driver' => 'session',
+                    'provider' => $name . '_users',
+                ],
+                'auth.providers.' . $name . '_users' => [
+                    'driver' => 'eloquent',
+                    'model' => 'App\\Models\\' . Str::studly($name . '_users')
+                ]
+            ]);
         }
     }
 }

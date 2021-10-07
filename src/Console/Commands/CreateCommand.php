@@ -73,6 +73,7 @@ class CreateCommand extends Command
         } else {
             $this->createDirectories();
             $this->createRoutes();
+            $this->createControllers();
             $this->updateIndexes();
         }
     }
@@ -124,6 +125,22 @@ class CreateCommand extends Command
             [
                 '__DUMMY_NAME__' => $this->name,
                 '__DUMMY_PREFIX__' => $this->prefix,
+                '__DUMMY_NAMESPACE__' => $this->application->nameSpace(),
+            ]
+        );
+    }
+
+    /**
+     * Create default application controllers.
+     */
+    private function createControllers(): void
+    {
+        $this->title('Create application controllers');
+        $this->copyFiles(
+            AdminFacade::packagePath('stubs/controllers'),
+            $this->application->path('Controllers'),
+            [
+                '__DUMMY_NAMESPACE__' => $this->application->nameSpace(),
             ]
         );
     }

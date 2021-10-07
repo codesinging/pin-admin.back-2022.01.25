@@ -10,7 +10,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['web', 'admin.boot:__DUMMY_NAME__', 'admin'])
     ->prefix('__DUMMY_PREFIX__')
     ->group(function(){
-        Route::get('/', function (){
-            return admin()->name();
-        });
+        Route::get('/', [__DUMMY_NAMESPACE__\Controllers\IndexController::class, 'index']);
     });

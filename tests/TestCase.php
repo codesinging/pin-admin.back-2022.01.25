@@ -21,6 +21,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         $admin = app(Admin::LABEL);
         if ($name) {
+            $admin->load($name);
             $admin->boot($name);
         }
         return $admin;

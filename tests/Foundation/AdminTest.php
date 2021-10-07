@@ -2,8 +2,7 @@
 
 namespace CodeSinging\PinAdmin\Tests\Foundation;
 
-use CodeSinging\PinAdmin\Exceptions\ApplicationNotFoundException;
-use CodeSinging\PinAdmin\Exceptions\InvalidApplicationNameException;
+use CodeSinging\PinAdmin\Exceptions\AdminException;
 use CodeSinging\PinAdmin\Foundation\Admin;
 use CodeSinging\PinAdmin\Foundation\Application;
 use CodeSinging\PinAdmin\Tests\TestCase;
@@ -33,38 +32,36 @@ class AdminTest extends TestCase
     }
 
     /**
-     * @throws ApplicationNotFoundException
-     * @throws InvalidApplicationNameException
+     * @throws AdminException
      */
     public function testApplication()
     {
         self::assertNull($this->admin()->application());
-        self::expectException(ApplicationNotFoundException::class);
+        self::expectException(AdminException::class);
         $this->admin()->application('admin');
         $this->admin()->boot('admin');
         self::assertInstanceOf(Application::class, $this->admin()->application('admin'));
     }
 
     /**
-     * @throws InvalidApplicationNameException
+     * @throws AdminException
      */
-    public function testAdd()
+    public function testLoad()
     {
         self::assertCount(0, $this->admin()->applications());
-        $this->admin()->add('admin');
+        $this->admin()->load('admin');
         self::assertCount(1, $this->admin()->applications());
-        $this->admin()->add('user');
+        $this->admin()->load('user');
         self::assertCount(2, $this->admin()->applications());
     }
 
     /**
-     * @throws ApplicationNotFoundException
-     * @throws InvalidApplicationNameException
+     * @throws AdminException
      */
     public function testBoot()
     {
-        $this->admin()->add('admin');
-        $this->admin()->add('user');
+        $this->admin()->load('admin');
+        $this->admin()->load('user');
         self::assertNull($this->admin()->application());
         $this->admin()->boot('admin');
         self::assertEquals('admin', $this->admin()->name());
@@ -75,7 +72,7 @@ class AdminTest extends TestCase
     public function testPackagePath()
     {
         self::assertEquals(dirname(__DIR__, 2), $this->admin()->packagePath());
-        self::assertEquals(dirname(__DIR__, 1), $this->admin()->packagePath('tests'));
+        self::assertEquals(dirname(__DIR__), $this->admin()->packagePath('tests'));
         self::assertEquals(__DIR__, $this->admin()->packagePath('tests', 'Foundation'));
     }
 

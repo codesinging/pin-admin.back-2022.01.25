@@ -2,7 +2,7 @@
 
 namespace CodeSinging\PinAdmin\Foundation;
 
-use CodeSinging\PinAdmin\Exceptions\InvalidApplicationNameException;
+use CodeSinging\PinAdmin\Exceptions\AdminException;
 use Illuminate\Support\Str;
 
 class Application
@@ -31,14 +31,14 @@ class Application
 
     /**
      * @param string $name
-     * @throws InvalidApplicationNameException
+     * @throws AdminException
      */
     public function __construct(string $name)
     {
         if (self::verifyName($name)) {
             $this->init($name);
         } else {
-            throw new InvalidApplicationNameException(sprintf('The application name [%s] is invalid', $name));
+            throw new AdminException(sprintf('The application name [%s] is invalid', $name));
         }
     }
 
