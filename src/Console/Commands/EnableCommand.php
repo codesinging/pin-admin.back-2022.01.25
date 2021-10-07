@@ -11,34 +11,34 @@ use CodeSinging\PinAdmin\Console\Command;
 use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Foundation\Admin;
 
-class DisableCommand extends Command
+class EnableCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = Admin::LABEL . ':disable {name}';
+    protected $signature = Admin::LABEL . ':enable {name}';
 
     /**
      * The console command description.
      *
      * @var string|null
      */
-    protected $description = 'Disable a PinAdmin application';
+    protected $description = 'Enable a PinAdmin application';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->title('Disable application');
+        $this->title('Enable application');
 
         $name = $this->argument('name');
         $indexes = AdminFacade::indexes();
 
         if (array_key_exists($name, $indexes)) {
-            $indexes[$name]['status'] = false;
+            $indexes[$name]['status'] = true;
             $this->copyFile(
                 AdminFacade::packagePath('stubs/indexes.php'),
                 AdminFacade::basePath('indexes.php'),
