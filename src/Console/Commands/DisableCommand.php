@@ -11,21 +11,21 @@ use CodeSinging\PinAdmin\Console\Command;
 use CodeSinging\PinAdmin\Facades\Admin as AdminFacade;
 use CodeSinging\PinAdmin\Foundation\Admin;
 
-class StopCommand extends Command
+class DisableCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = Admin::LABEL . ':stop {name}';
+    protected $signature = Admin::LABEL . ':disable {name}';
 
     /**
      * The console command description.
      *
      * @var string|null
      */
-    protected $description = 'Stop a PinAdmin application';
+    protected $description = 'Disable a PinAdmin application';
 
     /**
      * Execute the console command.
