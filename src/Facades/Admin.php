@@ -29,6 +29,6 @@ class Admin extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return FoundationAdmin::class;
+        return FoundationAdmin::LABEL;
     }
 }
