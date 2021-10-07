@@ -2,6 +2,7 @@
 
 namespace CodeSinging\PinAdmin\Tests\Foundation;
 
+use CodeSinging\PinAdmin\Exceptions\AdminException;
 use CodeSinging\PinAdmin\Foundation\Application;
 use CodeSinging\PinAdmin\Tests\TestCase;
 
@@ -52,5 +53,25 @@ class ApplicationTest extends TestCase
         self::assertEquals('App\\PinAdmin\\Admin', (new Application('admin'))->nameSpace());
         self::assertEquals('App\\PinAdmin\\Admin\\Controllers', (new Application('admin'))->nameSpace('Controllers'));
         self::assertEquals('App\\PinAdmin\\Admin\\Controllers\\IndexController.php', (new Application('admin'))->nameSpace('Controllers', 'IndexController.php'));
+    }
+
+    /**
+     * @throws AdminException
+     */
+    public function testRoutePrefix()
+    {
+        self::assertEquals('admin', (new Application('admin'))->routePrefix());
+        self::assertEquals('admin123', (new Application('admin', ['prefix' => 'admin123']))->routePrefix());
+    }
+
+    /**
+     * @throws AdminException
+     */
+    public function testLink()
+    {
+        self::assertEquals('/admin', (new Application('admin'))->link());
+        self::assertEquals('/admin/home', (new Application('admin'))->link('home'));
+        self::assertEquals('/admin/home?id=1', (new Application('admin'))->link('home', ['id' => 1]));
+        self::assertEquals('/admin123', (new Application('admin', ['prefix' => 'admin123']))->link());
     }
 }

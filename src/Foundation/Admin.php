@@ -119,22 +119,24 @@ class Admin
      */
     private function init(): void
     {
-        $applications = $this->indexes();
-        foreach ($applications as $name => $application) {
-            if ($application['status']) {
-                $this->load($name);
+        $indexes = $this->indexes();
+        foreach ($indexes as $name => $options) {
+            if ($options['status']) {
+                $this->load($name, $options);
             }
         }
     }
 
     /**
      * Load a PinAdmin application.
+     * @param string $name
+     * @param array $options
      * @throws AdminException
      */
-    public function load(string $name)
+    public function load(string $name, array $options = [])
     {
         if (empty($this->applications[$name])) {
-            $this->applications[$name] = new Application($name);
+            $this->applications[$name] = new Application($name, $options);
         }
     }
 

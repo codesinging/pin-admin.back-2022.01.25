@@ -30,13 +30,20 @@ class Application
     protected $directory;
 
     /**
+     * The application bootstrap options.
+     * @var array
+     */
+    protected $options = [];
+
+    /**
      * @param string $name
+     * @param array $options
      * @throws AdminException
      */
-    public function __construct(string $name)
+    public function __construct(string $name, array $options = [])
     {
         if (self::verifyName($name)) {
-            $this->init($name);
+            $this->init($name, $options);
         } else {
             throw new AdminException(sprintf('The application name [%s] is invalid', $name));
         }
@@ -61,10 +68,12 @@ class Application
     /**
      * Initialize the application.
      * @param string $name
+     * @param array $options
      */
-    protected function init(string $name)
+    protected function init(string $name, array $options = [])
     {
         $this->name = $name;
+        $this->options = $options;
         $this->directory = self::BASE_DIRECTORY . DIRECTORY_SEPARATOR . Str::studly($name);
     }
 
@@ -106,5 +115,32 @@ class Application
     public function nameSpace(...$paths): string
     {
         return implode('\\', ['App', str_replace('/', '\\', $this->directory(...$paths))]);
+    }
+
+    /**
+     * Get the route prefix.
+     * @return string
+     */
+    public function routePrefix(): string
+    {
+        return $this->options['prefix'] ?? $this->name;
+    }
+
+    /**
+     * Get absolute link url.
+     * @param string $path
+     * @param array $parameters
+     * @return string
+     */
+    public function link(string $path = '', array $parameters = []): string
+    {
+        $link = '/' . $this->routePrefix();
+        if ($path) {
+            $link .= Str::start($path, '/');
+        }
+        if ($parameters) {
+            $link .= '?' . http_build_query($parameters);
+        }
+        return $link;
     }
 }
