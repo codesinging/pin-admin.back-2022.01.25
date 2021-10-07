@@ -112,5 +112,6 @@ class AdminTest extends TestCase
     {
         self::assertEquals('App\\PinAdmin\\Admin', $this->admin('admin')->nameSpace());
         self::assertEquals('App\\PinAdmin\\Admin\\Controllers', $this->admin('admin')->nameSpace('Controllers'));
+        self::assertEquals('App\\PinAdmin\\Admin\\Controllers\\IndexController.php', $this->admin('admin')->nameSpace('Controllers', 'IndexController.php'));
     }
 }

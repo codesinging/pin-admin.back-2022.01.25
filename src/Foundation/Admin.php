@@ -7,9 +7,9 @@ use CodeSinging\PinAdmin\Exceptions\InvalidApplicationNameException;
 
 /**
  * @method string name()
- * @method string directory(string $path = '')
- * @method string path(string $path = '')
- * @method string nameSpace(string $path = '')
+ * @method string directory(string ...$paths)
+ * @method string path(string ...$paths)
+ * @method string nameSpace(string ...$paths)
  */
 class Admin
 {

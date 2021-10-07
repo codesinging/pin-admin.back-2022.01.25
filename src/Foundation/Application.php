@@ -79,32 +79,33 @@ class Application
     }
 
     /**
-     * Get the application's directory.
-     * @param string $path
+     * Get the application's directory relative to `app`.
+     * @param string ...$paths
      * @return string
      */
-    public function directory(string $path = ''): string
+    public function directory(...$paths): string
     {
-        return $this->directory. ($path ? DIRECTORY_SEPARATOR . $path : '');
+        array_unshift($paths, $this->directory);
+        return implode(DIRECTORY_SEPARATOR, $paths);
     }
 
     /**
      * Get the application's path.
-     * @param string $path
+     * @param string ...$paths
      * @return string
      */
-    public function path(string $path = ''): string
+    public function path(...$paths): string
     {
-        return app_path($this->directory($path));
+        return app_path($this->directory(...$paths));
     }
 
     /**
      * Get the application's namespace.
-     * @param string $path
+     * @param string ...$paths
      * @return string
      */
-    public function nameSpace(string $path = ''): string
+    public function nameSpace(...$paths): string
     {
-        return implode('\\', ['App', str_replace('/', '\\', $this->directory($path))]);
+        return implode('\\', ['App', str_replace('/', '\\', $this->directory(...$paths))]);
     }
 }
